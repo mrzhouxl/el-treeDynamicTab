@@ -1,6 +1,15 @@
 <template>
   <div id="app">
-    <ztreeTable :treeData="data" @nodeClick='nodeClick' @append='append' title="科目分类">
+    <tree-dynamic
+      :isAddAndDel="true"
+      :isDisplaySearch="true"
+      :treeData="data"
+      @search="search"
+      @nodeClick="nodeClick"
+      @append="append"
+      @remove="remove"
+      title="测试"
+    >
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="date" label="日期" width="180">
         </el-table-column>
@@ -8,17 +17,17 @@
         </el-table-column>
         <el-table-column prop="address" label="地址"> </el-table-column>
       </el-table>
-    </ztreeTable>
+    </tree-dynamic>
   </div>
 </template>
 
 <script>
-import ztreeTable from "./components/ztreeTable.vue";
+import treeDynamic from "./components/tree-dynamic.vue";
 
 export default {
   name: "App",
   components: {
-    ztreeTable,
+    treeDynamic,
   },
   data() {
     return {
@@ -68,14 +77,20 @@ export default {
       ],
     };
   },
-  methods:{
-    nodeClick(data){
-      console.log(222)
+  methods: {
+    nodeClick(data) {
+      console.log(data,'click');
     },
-    append(node, data){
-      console.log(11)
-    }
-  }
+    append(node, data) {
+      console.log(node);
+    },
+    remove(node, data) {
+      console.log(node, data);
+    },
+    search(search) {
+      console.log(search,'search');
+    },
+  },
 };
 </script>
 

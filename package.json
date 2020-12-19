@@ -1,24 +1,25 @@
 {
-  "name": "el-treedynamictab",
-  "author": "mrzhouxl",
+  "name": "el-tree-dynamic",
+  "author": "silentcm",
   "version": "0.1.0",
   "keywords": [
     "vue",
     "component",
     "tree",
-    "table",
     "slot",
     "Dynamic"
   ],
-  "main": "dist/vue-clock.min.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrzhouxl/el-treeDynamicTab.git"
+  },
+  "main": "dist/el-tree-dynamic.umd.js",
   "license": "MIT",
-  "homepage": "https://bestvist.github.io/vue-clock2/",
-  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lib": "vue-cli-service build --target lib --name el-treedynamictab --dest lib components/index.js"
+    "lib": "vue-cli-service build --target lib ./src/components/index.js --name el-tree-dynamic --dest dist"
   },
   "dependencies": {
     "babel-plugin-component": "^1.1.1",

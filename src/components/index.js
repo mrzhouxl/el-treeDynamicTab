@@ -1,9 +1,8 @@
 import Vue from 'vue';
-import ztreeTable from './ztreeTable.vue';
-import './index.scss';
+import treeDynamic from './tree-dynamic.vue';
 
 const Components = {
-    ztreeTable
+    treeDynamic
 };
 
 Object.keys(Components).forEach(name => {

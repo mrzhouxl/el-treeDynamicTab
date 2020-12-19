@@ -2,17 +2,17 @@
   <div class="content">
     <div class="custom-tree-container treeSty">
       <div class="block">
-        <div class="top">
+        <div class="top" v-if="title!=''">
           <h3>{{title}}</h3>
         </div>
-        <div class="treeSerach">
+        <div class="treeSerach" v-if="isDisplaySearch">
           <el-input
             v-model="searchInput"
             size="mini"
             class="searchInput"
             placeholder="请输入内容"
           ></el-input>
-          <el-button size="mini" type="primary">搜索</el-button>
+          <el-button size="mini" type="primary" @click="search">搜索</el-button>
         </div>
 
         <el-tree
@@ -33,7 +33,7 @@
               />
               {{ node.label }}
             </span>
-            <span>
+            <span v-if="isAddAndDel">
               <el-button type="text" size="mini" @click.stop="() => append(data)">
                 <img
                   src="../../public/img/tree/add.png"
@@ -73,11 +73,11 @@ export default {
     },
     isAddAndDel: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     isDisplaySearch: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     title: String,
   },
@@ -118,8 +118,9 @@ export default {
 }
 
 .block {
+  height: 100%;
   .top {
-    height: 49px;
+    max-height: 49px;
     padding-left: 16px;
     h3 {
       font-size: 16px;
@@ -149,7 +150,6 @@ export default {
   }
   .treeSty {
     width: 280px !important;
-    height: 80%;
     border: 1px solid #eee;
   }
 }
