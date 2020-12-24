@@ -25,13 +25,13 @@
 </template>
 
 <script>
-import treeDynamic from "./components/tree-dynamic.vue";
+// import treeDynamic from "./components/tree-dynamic.vue";
 
 export default {
   name: "App",
-  components: {
-    treeDynamic,
-  },
+  // components: {
+  //   treeDynamic,
+  // },
   data() {
     return {
       data: [
