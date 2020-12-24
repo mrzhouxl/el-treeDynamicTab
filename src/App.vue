@@ -1,9 +1,12 @@
 <template>
   <div id="app">
     <tree-dynamic
-      :isAddAndDel="true"
+      :isAddAndDel="false"
       :isDisplaySearch="true"
       :treeData="data"
+      :dynamicOnoff="true"
+      :isboyNodeAdd="true"
+      
       @search="search"
       @nodeClick="nodeClick"
       @append="append"

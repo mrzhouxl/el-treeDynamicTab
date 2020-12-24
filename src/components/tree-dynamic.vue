@@ -2,11 +2,12 @@
   <div class="content">
     <div class="custom-tree-container treeSty">
       <div class="block">
-        <div class="top" v-if="title!=''">
-          <h3>{{title}}</h3>
+        <div class="top" v-if="title != ''">
+          <h3>{{ title }}</h3>
         </div>
         <div class="treeSerach" v-if="isDisplaySearch">
           <el-input
+            id="input1"
             v-model="searchInput"
             size="mini"
             class="searchInput"
@@ -17,40 +18,50 @@
 
         <el-tree
           :data="treeData"
+          :iconClass='iconClass'
           node-key="id"
           default-expand-all
           :expand-on-click-node="false"
           :show-checkbox="false"
-          @node-click='nodeClick'
+          @node-click="nodeClick"
         >
-          <span class="custom-tree-node" slot-scope="{ node, data }">
+          <span class="custom-tree-node" :class="{dynamicOnoff}" slot-scope="{ node, data }">
             <span class="font">
               <img
                 style="margin-right: 5px"
-                src="../../public/img/tree/dir.png"
+                :src="dirIcon"
                 width="16"
                 height="16"
               />
               {{ node.label }}
             </span>
-            <span v-if="isAddAndDel">
-              <el-button type="text" size="mini" @click.stop="() => append(data)">
-                <img
-                  src="../../public/img/tree/add.png"
-                  width="16"
-                  height="16"
-                />
+
+            <span
+             class="operationBtn"
+              v-if="isAddAndDel"
+              v-show="
+                lastLevel.find((_) => {
+                  if (!isboyNodeAdd) {
+                    return 5;
+                  } else {
+                    return String(_.id) == String(node.data.id);
+                  }
+                })
+              "
+            >
+              <el-button
+                type="text"
+                size="mini"
+                @click.stop="() => append(data)"
+              >
+                <img :src="addIcon" width="16" height="16" />
               </el-button>
               <el-button
                 type="text"
                 size="mini"
                 @click.stop="() => remove(node, data)"
               >
-                <img
-                  src="../../public/img/tree/delete.png"
-                  width="16"
-                  height="16"
-                />
+                <img :src="removeIcon" width="16" height="16" />
               </el-button>
             </span>
           </span>
@@ -65,6 +76,7 @@
 <script>
 export default {
   props: {
+    iconClass:String,
     treeData: {
       type: Array,
       default() {
@@ -80,14 +92,39 @@ export default {
       default: true,
     },
     title: String,
+    dirIcon: {
+      type: String,
+      default: require("../../public/img/tree/dir.png"),
+    },
+    addIcon: {
+      type: String,
+      default: require("../../public/img/tree/add.png"),
+    },
+    removeIcon: {
+      type: String,
+      default: require("../../public/img/tree/delete.png"),
+    },
+    isboyNodeAdd: {
+      type: Boolean,
+      default: false,
+    },
+    dynamicOnoff:{
+      type:Boolean,
+      default:false
+    }
   },
   name: "ztreeTable",
   data() {
     return {
       searchInput: "",
+      Level: [],
     };
   },
-
+  computed: {
+    lastLevel() {
+      return this.getLastLevel(this.treeData);
+    },
+  },
   methods: {
     append(data) {
       this.$emit("append", data);
@@ -98,9 +135,21 @@ export default {
     search() {
       this.$emit("search", this.searchInput);
     },
-    nodeClick(data){
-      this.$emit('nodeClick',data)
-    }
+    nodeClick(data) {
+      this.$emit("nodeClick", data);
+    },
+    getLastLevel(item) {
+      if (item) {
+        for (const item of item) {
+          if (item.children && item.children.length != 0) {
+            this.getLastLevel(item.children);
+          } else {
+            this.Level.push(item);
+          }
+        }
+      }
+      return this.Level;
+    },
   },
 };
 </script>
@@ -119,6 +168,7 @@ export default {
 
 .block {
   height: 100%;
+  min-width: 190px;
   .top {
     max-height: 49px;
     padding-left: 16px;
@@ -130,20 +180,30 @@ export default {
       line-height: 49px;
     }
   }
+  .dynamicOnoff .operationBtn{
+    display:none;
+  }
+  .dynamicOnoff:hover{
+    .operationBtn{
+      display: block;
+    }
+  }
   .treeSerach {
     display: flex;
     width: 100%;
+    margin: 0 5px;
     .searchInput {
       margin-right: 5px;
-      input {
-        width: 80% !important;
-      }
+      width: 65%;
+    }
+    button {
+      width: 28%;
+      text-align: center;
     }
   }
 }
 .content {
   display: flex;
-
   .treeSlot {
     width: 100% !important;
     padding: 0 10px;
